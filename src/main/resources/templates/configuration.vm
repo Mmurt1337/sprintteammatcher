@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Configuration Page</h2>
+    <form class="aui" action="${baseurl}/secure/TeamFieldConfigurationAction!save.jspa" method="post">
+        <div class="field-group">
+            <label for="fieldId">Field ID</label>
+            <input class="text" type="text" id="fieldId" name="fieldId" value="$fieldId">
+        </div>
+        <div class="field-group">
+            <h3>$!message</h3>
+            <h3>$!fieldId</h3>
+        </div>
+        <!-- Новый раздел для сохранения группы -->
+        <div class="field-group">
+            <label for="groupName">Group Name</label>
+            <input class="text" type="text" id="groupName" name="groupName" value="$groupName">
+        </div>
+        <div class="buttons-container">
+            <button class="aui-button aui-button-primary" type="submit">Save</button>
+        </div>
+    </form>
+</body>
+</html>

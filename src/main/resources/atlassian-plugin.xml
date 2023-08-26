@@ -1,0 +1,102 @@
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+        <imports>
+            <import package="com.atlassian.activeobjects.external"/>
+        </imports>
+    </plugin-info>
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="sprint-team-matcher"/>
+
+    <!-- add our web resources -->
+    <web-resource key="sprint-team-matcher-resources" name="sprint-team-matcher Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <dependency>com.atlassian.auiplugin:dialog2</dependency>
+        <dependency>com.atlassian.auiplugin:aui-select2</dependency>
+        <resource type="download" name="sprint-team-matcher.js" location="/js/sprint-team-matcher.js"/>
+        <resource type="download" name="assign-team-to-sprint-dialog.vm" location="/templates/assign-team-to-sprint-dialog.vm"/>
+        <resource type="download" name="images/" location="/images"/>
+        <context>jira.agile.board.tools</context>
+        <context>atl.general</context>
+        <context>sprint-team-matcher</context>
+    </web-resource>
+
+    <ao key="ao-module-sprint-team-matcher" name="Active Objects Sprint Team Matcher">
+        <description>The Active Objects module</description>
+        <entity>ru.homecredit.sprintteammatcher.entities.field.TeamFieldConfiguration</entity>
+        <entity>ru.homecredit.sprintteammatcher.entities.sprint.SprintTeam</entity>
+    </ao>
+
+    <webwork1 key="sprint-team-matcher.webwork.config"
+              name="SprintTeamMatcher Configuration Webwork"
+              class="ru.homecredit.sprintteammatcher.webwork.TeamFieldConfigurationAction"
+              roles-required="admin">
+        <actions>
+            <action name="ru.homecredit.sprintteammatcher.webwork.TeamFieldConfigurationAction"
+                    alias="TeamFieldConfigurationAction">
+                <view name="input">/templates/configuration.vm</view>
+                <view name="success">/templates/configuration.vm</view>
+            </action>
+        </actions>
+    </webwork1>
+
+    <webwork1 key="sprint-team-matcher.webwork.edite"
+              name="SprintTeamMatcher Configuration Webwork Edite Team"
+              class="ru.homecredit.sprintteammatcher.webwork.EditeTeamAction"
+              roles-required="admin">
+        <actions>
+            <action name="ru.homecredit.sprintteammatcher.webwork.EditeTeamAction"
+                    alias="EditeTeamAction">
+                <view name="input">/templates/sprint-search.vm</view>
+            </action>
+        </actions>
+    </webwork1>
+
+
+    <web-section key="sprint-team-matcher-config-section" location="admin_plugins_menu" weight="50">
+        <label>Sprint team matcher</label>
+    </web-section>
+
+    <web-item key="sprint-team-matcher-item" section="admin_plugins_menu/sprint-team-matcher-config-section" weight="10">
+        <label key="Sprint Team Matcher Configuration"/>
+        <link linkId="sprint-team-matcher-configuration-link">/TeamFieldConfigurationAction.jspa</link>
+    </web-item>
+
+    <web-item key="edite-sprint-team-matcher-item" section="admin_plugins_menu/sprint-team-matcher-config-section" weight="10">
+        <label key="Edite Team"/>
+        <link linkId="sprint-team-matcher-configuration-link">/EditeTeamAction.jspa</link>
+    </web-item>
+
+    <webwork1 key="assign-team-to-sprint.webwork" name="Assign Team To Sprint" class="java.lang.Object">
+        <actions>
+            <action name="ru.homecredit.sprintteammatcher.webwork.AssignTeamToSprintAction" alias="AssignTeamToSprint">
+                <view name="input">/templates/assign-team-to-sprint-dialog.vm</view>
+                <view name="success">templates/assign-success-dialog.vm</view>
+                <view name="error">templates/assign-error-dialog.vm</view>
+            </action>
+        </actions>
+    </webwork1>
+
+
+    <web-section key="sprint.team.assignment.section" name="Sprint Team Assignment" location="jira.agile.board.tools" weight="10">
+        <label>Assign Team to Sprint</label>
+        <conditions type="AND">
+
+            <condition class="ru.homecredit.sprintteammatcher.conditions.IsCurrentUserAdminOrInSavedGroup"></condition>
+            <condition class="ru.homecredit.sprintteammatcher.conditions.IsScrumBoardCondition"></condition>
+
+        </conditions>
+    </web-section>
+    <web-item key="assign-team-to-sprint-item" name="Assign Team to Sprint" section="sprint.team.assignment.section" weight="10">
+        <label>Assign Team to Sprint</label>
+        <!--<param name="param0">$helper.board.id</param> -->
+
+        <link linkId="assign-team-to-sprint-item"><![CDATA[/plugins/AssignTeamToSprint.jspa?boardId=$board.id&boardType=$board.type]]></link>
+        <styleClass>assign-team-to-sprint-dialog</styleClass>
+    </web-item>
+</atlassian-plugin>

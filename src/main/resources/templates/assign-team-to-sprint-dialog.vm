@@ -1,0 +1,39 @@
+<h2 class="dialog-title">Assign Team to Sprint</h2>
+    <script type="text/javascript">
+        AJS.$("#team-selector").auiSelect2();
+        AJS.$("#sprint-selector").auiSelect2();
+    </script>
+    <form id="assign-team-form" class="aui" action="AssignTeamToSprint!save.jspa" method="post">
+        <input type="hidden" id="sprint-name-hidden" name="selectedSprintName" value="">
+            <div class="field-group">
+                <label>Select a Team <span class="aui-icon icon-required"></span></label>
+                <select id="team-selector" name="selectedTeamName"required>
+                    <option></option>
+                    #foreach ($option in $options)
+                        <option value="$option.value">$option.value</option>
+                    #end
+                </select>
+                 <div class="description">Choose a team from the dropdown list</div>
+            </div>
+            <div class="field-group">
+                <label>Select a Sprint <span class="aui-icon icon-required"></span></label>
+                <select id="sprint-selector" name="selectedSprintId" onchange="document.getElementById('sprint-name-hidden').value=this.options[this.selectedIndex].text" class="select2-search" required>
+                    <option></option>
+                    #foreach ($sprint in $sprintDTOs)
+                        <option value="$sprint.id">$sprint.name</option>
+                    #end
+                </select>
+                <div class="description">Choose a sprint from the dropdown list</div>
+            </div>
+
+        </div>
+    <div class="buttons-container content-footer">
+        <div class="buttons">
+            <a href="#" class="cancel">Cancel</a>
+            <input class="button" type="submit" value="Assign" />
+        </div>
+    </div>
+</form>
+
+
+

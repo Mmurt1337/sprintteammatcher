@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Sprint</title>
+</head>
+<body>
+    <form action="EditeTeamAction!search.jspa" method="post">
+        <input type="text" name="sprintId" placeholder="Enter Sprint ID">
+        <input type="submit" value="Search">
+    </form>
+    #if($sprint)
+    <p>Sprint ID: $sprint.getSprintId()</p>
+    <p>Sprint Name: $sprint.getSprintName()</p>
+    <p>Team: $sprint.getTeam()</p>
+    #end
+</body>
+</html>
