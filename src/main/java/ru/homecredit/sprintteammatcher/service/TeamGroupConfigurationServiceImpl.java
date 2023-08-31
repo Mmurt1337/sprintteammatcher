@@ -40,4 +40,5 @@ public class TeamGroupConfigurationServiceImpl implements TeamGroupConfiguration
         TeamGroupConfiguration[] configs = activeObjects.find(TeamGroupConfiguration.class, "GROUP_NAME = ?", groupName);
         return configs.length > 0;
     }
+
 }

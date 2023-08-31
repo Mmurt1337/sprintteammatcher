@@ -30,6 +30,7 @@
         <description>The Active Objects module</description>
         <entity>ru.homecredit.sprintteammatcher.entities.field.TeamFieldConfiguration</entity>
         <entity>ru.homecredit.sprintteammatcher.entities.sprint.SprintTeam</entity>
+        <entity>ru.homecredit.sprintteammatcher.entities.group.TeamGroupConfiguration</entity>
     </ao>
 
     <webwork1 key="sprint-team-matcher.webwork.config"

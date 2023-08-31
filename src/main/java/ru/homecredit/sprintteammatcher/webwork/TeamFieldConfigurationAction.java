@@ -7,17 +7,13 @@ import ru.homecredit.sprintteammatcher.service.TeamGroupConfigurationService;
 
 import java.util.List;
 
-/**
- * Класс TeamFieldConfigurationAction предназначен для обработки действий настройки поля команды.
- * Он наследуется от класса JiraWebActionSupport для поддержки веб-действий JIRA.
- */
 public class TeamFieldConfigurationAction extends JiraWebActionSupport {
 
     private final TeamFieldConfigurationService teamFieldConfigurationService;
     private final TeamGroupConfigurationService teamGroupConfigurationService;
 
     private String fieldId;
-    private String message;
+    private String newGroupName;
     private List<String> groupNames;
 
     @Autowired
@@ -30,29 +26,23 @@ public class TeamFieldConfigurationAction extends JiraWebActionSupport {
     @Override
     protected String doExecute() throws Exception {
         fieldId = teamFieldConfigurationService.getFieldId();
-        message = teamFieldConfigurationService.getMessage();
         groupNames = teamGroupConfigurationService.getGroupNames();
-
         return INPUT;
     }
 
-    public void doSave() {
-        if (!teamFieldConfigurationService.isFieldExists(fieldId)) {
-            message = "Field does not exist!";
-            return;
+    public String doSave() {
+        if (teamFieldConfigurationService.isFieldExists(fieldId)) {
+            teamFieldConfigurationService.setFieldId(fieldId);
         }
 
-        teamFieldConfigurationService.setFieldId(fieldId);
-
-        if (groupNames != null) {
-            for (String groupName : groupNames) {
-                teamGroupConfigurationService.addGroupName(groupName);
-            }
+        if (newGroupName != null && !newGroupName.trim().isEmpty() && !teamGroupConfigurationService.isGroupNameExists(newGroupName)) {
+            teamGroupConfigurationService.addGroupName(newGroupName);
         }
 
-        message = "Field ID saved: " + fieldId + ". Group Names saved: " + String.join(", ", groupNames);
+        return SUCCESS;
     }
 
+    // Геттеры и сеттеры
     public String getFieldId() {
         return fieldId;
     }
@@ -61,19 +51,15 @@ public class TeamFieldConfigurationAction extends JiraWebActionSupport {
         this.fieldId = fieldId;
     }
 
-    public String getMessage() {
-        return message;
+    public String getNewGroupName() {
+        return newGroupName;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setNewGroupName(String newGroupName) {
+        this.newGroupName = newGroupName;
     }
 
     public List<String> getGroupNames() {
         return groupNames;
-    }
-
-    public void setGroupNames(List<String> groupNames) {
-        this.groupNames = groupNames;
     }
 }

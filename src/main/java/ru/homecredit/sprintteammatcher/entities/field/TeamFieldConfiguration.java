@@ -7,9 +7,6 @@ import net.java.ao.schema.Table;
 @Preload
 @Table("TEAM_FIELD")
 public interface TeamFieldConfiguration extends Entity {
-
     String getFieldId();
     void setFieldId(String fieldId);
-    String getMessage();
-    void setMessage(String message);
 }

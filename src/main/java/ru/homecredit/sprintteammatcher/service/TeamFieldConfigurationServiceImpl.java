@@ -64,26 +64,6 @@ public class TeamFieldConfigurationServiceImpl implements TeamFieldConfiguration
         config.setFieldId(fieldId);
         config.save();
     }
-    /**
-     * Возвращает текущее сообщение для конфигурации поля команды.
-     *
-     * @return строка, содержащая сообщение, или null, если конфигурация поля отсутствует.
-     */
-    public String getMessage() {
-        TeamFieldConfiguration[] configs = activeObjects.find(TeamFieldConfiguration.class);
-        return (configs.length > 0) ? configs[0].getMessage() : null;
-    }
-    /**
-     * Устанавливает сообщение для конфигурации поля команды. Если конфигурация поля уже существует, обновляет ее,
-     * иначе создает новую конфигурацию.
-     *
-     * @param message новое сообщение для конфигурации поля.
-     */
-    public void setMessage(String message) {
-        TeamFieldConfiguration[] configs = activeObjects.find(TeamFieldConfiguration.class);
-        TeamFieldConfiguration config = (configs.length > 0) ? configs[0] : activeObjects.create(TeamFieldConfiguration.class);
-        config.setMessage(message);
-        config.save();
-    }
+
 
 }
